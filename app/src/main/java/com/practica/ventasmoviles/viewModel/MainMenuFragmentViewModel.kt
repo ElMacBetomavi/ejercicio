@@ -12,4 +12,14 @@ class MainMenuFragmentViewModel:ViewModel() {
         listItems.postValue(ObjectsProvider.productos)
     }
 
+    fun verDetallesProduct(id:Int){
+        println("ver detalles " +id)
+    }
+    fun eliminarProducto(id:Int){
+        println("eliminar " +id)
+    }
+    fun editarProducto(id:Int){
+        println("editar " +id)
+    }
+
 }

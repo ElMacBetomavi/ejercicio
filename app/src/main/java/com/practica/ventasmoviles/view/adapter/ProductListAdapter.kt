@@ -1,12 +1,22 @@
 package com.practica.ventasmoviles.view.adapter
-import android.view.*
+import android.view.ContextMenu
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.ventasmoviles.R
 import com.practica.ventasmoviles.model.ProductoModel
 
+
 class ProductListAdapter(private val productsList: List<ProductoModel>) :
-    RecyclerView.Adapter<ProductListAdapter.ViewHolder>(){
+    RecyclerView.Adapter<ProductListAdapter.ViewHolder>(), View.OnCreateContextMenuListener {
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.itemView.setOnLongClickListener(null)
+        super.onViewRecycled(holder)
+    }
 
     private var position:Int = 0
 
@@ -30,6 +40,8 @@ class ProductListAdapter(private val productsList: List<ProductoModel>) :
             marca = view.findViewById(R.id.marca_label)
         }
 
+
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -38,6 +50,7 @@ class ProductListAdapter(private val productsList: List<ProductoModel>) :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.product_item, viewGroup, false)
 
+        view.setOnCreateContextMenuListener(this)
         return ViewHolder(view)
     }
 
@@ -46,10 +59,23 @@ class ProductListAdapter(private val productsList: List<ProductoModel>) :
         viewHolder.nombre.text = productsList[position].nombre
         viewHolder.categoria.text = productsList[position].categoria
         viewHolder.marca.text = productsList[position].marca
-
+        viewHolder.itemView.setOnLongClickListener(OnLongClickListener {
+            setPosition(position)
+            false
+        })
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = productsList.size
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        view: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        menu!!.setHeaderTitle(null);
+        menu.add(0, view!!.getId(), 0, "Ver detalles");//groupId, itemId, order, title
+        menu.add(0, view.getId(), 0, "Eliminar")
+        menu.add(0, view.getId(), 0, "Editar");
+    }
 
 }

@@ -73,6 +73,24 @@ class MainMenuFragment : Fragment() {
         println("menu de opciones")
     }
 
-    //acciones del context menu
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val position = adapter.getPosition()
+        val producto = productList[position]
+        return when (item.title) {
+            "Ver detalles" -> {
+                mainMenuFragmentViewModel.verDetallesProduct(producto.id)
+                true
+            }
+            "Eliminar" -> {
+                mainMenuFragmentViewModel.eliminarProducto(producto.id)
+                true
+            }
+            "Editar" -> {
+                mainMenuFragmentViewModel.editarProducto(producto.id)
+                true
+            }
+            else -> false
+        }
+    }
 
 }
