@@ -40,8 +40,6 @@ class ProductListAdapter(private val productsList: List<ProductoModel>) :
             marca = view.findViewById(R.id.marca_label)
         }
 
-
-
     }
 
     // Create new views (invoked by the layout manager)
@@ -67,6 +65,7 @@ class ProductListAdapter(private val productsList: List<ProductoModel>) :
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = productsList.size
+
     override fun onCreateContextMenu(
         menu: ContextMenu?,
         view: View?,

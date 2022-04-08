@@ -38,14 +38,18 @@ class MainMenuFragment : Fragment() {
         mainMenuFragmentViewModel.onCreateListItems()
         initRecyclerView()
         registerForContextMenu(binding.rvProducts)
+
         mainMenuFragmentViewModel.listItems.observe(viewLifecycleOwner, Observer { currentProductList ->
             productList = currentProductList
             adapter.notifyDataSetChanged()
         })
+        mainMenuFragmentViewModel.fragment.observe(viewLifecycleOwner, Observer { CurrentFragment ->
+            changeFragment(CurrentFragment)
+        })
 
         binding.topAppBar.setOnMenuItemClickListener {  menuItem -> setOnClickItems(menuItem) }
         binding.topAppBar.setNavigationOnClickListener { setOnClickMenu() }
-
+        binding.registerProductButton.setOnClickListener{ mainMenuFragmentViewModel.chagenRegisterProductoFragment() }
     }
 
     fun initRecyclerView(){
@@ -55,24 +59,37 @@ class MainMenuFragment : Fragment() {
         binding.rvProducts.adapter = adapter
     }
 
+    fun changeFragment(fragment: Fragment){
+        val transition = parentFragmentManager
+        val fragmentTransition =transition.beginTransaction()
+        fragmentTransition.add(R.id.fragment_container,fragment)
+        fragmentTransition.remove(this)
+        fragmentTransition.addToBackStack(null)
+        fragmentTransition.commit()
+    }
+
+    /*Selecciona una opcion delmenu del appBar correspondiente a filtrar y buscar*/
     private fun setOnClickItems(menuItem:MenuItem):Boolean{
         return when (menuItem.itemId) {
             R.id.filter -> {
-                println("filtrar")
+                println("filtrar ")
                 true
             }
             R.id.search -> {
-                println("buscar")
+                println("buscar ")
                 true
             }
             else -> false
         }
     }
 
+    /*accion del menu de categorias  muestra las opciones: -categoria, descripcion,
+    editar, eliminar, agregar categorias*/
     private fun setOnClickMenu(){
         println("menu de opciones")
     }
 
+    /*opciones de la tarjeta del producto, ver detalles, eliminar, editar*/
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = adapter.getPosition()
         val producto = productList[position]

@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/primary"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/register_product_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
