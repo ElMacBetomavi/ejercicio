@@ -26,7 +26,7 @@ class MainMenuFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainMenuBinding.inflate(inflater,container,false)
         return binding.root
     }
