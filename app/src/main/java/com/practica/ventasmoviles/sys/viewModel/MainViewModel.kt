@@ -1,12 +1,9 @@
-package com.practica.ventasmoviles.viewModel
+package com.practica.ventasmoviles.sys.viewModel
 
-import android.view.Menu
-import android.view.MenuInflater
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practica.ventasmoviles.R
-import com.practica.ventasmoviles.view.MainMenuFragment
+import com.practica.ventasmoviles.sys.ui.view.MainMenuFragment
 
 class MainViewModel() :ViewModel() {
 

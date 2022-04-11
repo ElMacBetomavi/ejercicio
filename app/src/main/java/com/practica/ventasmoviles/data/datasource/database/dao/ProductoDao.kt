@@ -1,4 +1,4 @@
-package com.practica.ventasmoviles.data.datasourch.database.dao
+package com.practica.ventasmoviles.data.datasource.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -15,7 +15,7 @@ interface ProductoDao {
     fun loadAllByIds(productsIds: IntArray): List<ProductosEntity>
 
     @Insert
-    fun insertAll(vararg product: ProductosEntity)
+    fun addProduct(product: ProductosEntity):Long
 
     @Delete
     fun delete(product: ProductosEntity)

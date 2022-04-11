@@ -1,4 +1,4 @@
-package com.practica.ventasmoviles.view.adapter
+package com.practica.ventasmoviles.sys.ui.view.adapter
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.ventasmoviles.R
-import com.practica.ventasmoviles.model.ProductoModel
+import com.practica.ventasmoviles.data.entities.ProductosEntity
 
 
-class ProductListAdapter(private val productsList: List<ProductoModel>) :
+class ProductListAdapter(private val productsList: List<ProductosEntity>) :
     RecyclerView.Adapter<ProductListAdapter.ViewHolder>(), View.OnCreateContextMenuListener {
 
     override fun onViewRecycled(holder: ViewHolder) {

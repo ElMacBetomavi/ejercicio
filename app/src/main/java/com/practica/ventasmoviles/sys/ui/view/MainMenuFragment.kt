@@ -1,33 +1,36 @@
-package com.practica.ventasmoviles.view
+package com.practica.ventasmoviles.sys.ui.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
-import android.view.ContextMenu.ContextMenuInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.practica.ventasmoviles.MainApplication
 import com.practica.ventasmoviles.R
+import com.practica.ventasmoviles.data.entities.ProductosEntity
 import com.practica.ventasmoviles.databinding.FragmentMainMenuBinding
-import com.practica.ventasmoviles.model.ObjectsProvider
-import com.practica.ventasmoviles.model.ProductoModel
-import com.practica.ventasmoviles.view.adapter.ProductListAdapter
-import com.practica.ventasmoviles.viewModel.MainMenuFragmentViewModel
+import com.practica.ventasmoviles.sys.ui.view.adapter.ProductListAdapter
+import com.practica.ventasmoviles.sys.viewModel.MainMenuFragmentViewModel
+
 
 class MainMenuFragment : Fragment() {
 
     private var _binding:FragmentMainMenuBinding? = null
     private val binding get() = _binding!!
     private val mainMenuFragmentViewModel: MainMenuFragmentViewModel by viewModels()
-    private var productList = emptyList<ProductoModel>()
+    //private var productList = emptyList<ProductoModel>()
+    private var productList = emptyList<ProductosEntity>()
     private lateinit var adapter: ProductListAdapter
+    val db = MainApplication.database.productoDao()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainMenuBinding.inflate(inflater,container,false)
+
         return binding.root
     }
 
@@ -36,10 +39,13 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mainMenuFragmentViewModel.onCreateListItems()
+
+        productList = MainApplication.database.productoDao().getAll()
+
         initRecyclerView()
         registerForContextMenu(binding.rvProducts)
 
-        mainMenuFragmentViewModel.listItems.observe(viewLifecycleOwner, Observer { currentProductList ->
+        mainMenuFragmentViewModel.products.observe(viewLifecycleOwner, Observer { currentProductList ->
             productList = currentProductList
             adapter.notifyDataSetChanged()
         })
@@ -53,7 +59,7 @@ class MainMenuFragment : Fragment() {
     }
 
     fun initRecyclerView(){
-        productList = ObjectsProvider.productos
+        productList = productList
         adapter = ProductListAdapter(productList)
         binding.rvProducts.layoutManager = LinearLayoutManager(parentFragment?.context)
         binding.rvProducts.adapter = adapter
@@ -62,8 +68,7 @@ class MainMenuFragment : Fragment() {
     fun changeFragment(fragment: Fragment){
         val transition = parentFragmentManager
         val fragmentTransition =transition.beginTransaction()
-        fragmentTransition.add(R.id.fragment_container,fragment)
-        fragmentTransition.remove(this)
+        fragmentTransition.replace(R.id.fragment_container,fragment)
         fragmentTransition.addToBackStack(null)
         fragmentTransition.commit()
     }
@@ -73,6 +78,7 @@ class MainMenuFragment : Fragment() {
         return when (menuItem.itemId) {
             R.id.filter -> {
                 println("filtrar ")
+
                 true
             }
             R.id.search -> {

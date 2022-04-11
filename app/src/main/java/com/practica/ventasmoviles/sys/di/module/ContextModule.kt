@@ -1,4 +1,8 @@
 package com.practica.ventasmoviles.sys.di.module
 
-class ContextModule {
+import com.practica.ventasmoviles.MainActivity
+
+
+
+class HomeModule(val activity: MainActivity) {
 }

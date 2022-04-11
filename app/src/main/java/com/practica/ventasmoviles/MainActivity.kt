@@ -1,11 +1,13 @@
 package com.practica.ventasmoviles
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.practica.ventasmoviles.databinding.ActivityMainBinding
-import com.practica.ventasmoviles.viewModel.MainViewModel
+import com.practica.ventasmoviles.sys.viewModel.MainViewModel
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private fun changeFragment(fragment: Fragment){
         val transition = supportFragmentManager
         val fragmentTransition =transition.beginTransaction()
-        fragmentTransition.add(R.id.fragment_container,fragment)
+        fragmentTransition.replace(R.id.fragment_container,fragment)
         fragmentTransition.commit()
     }
 
