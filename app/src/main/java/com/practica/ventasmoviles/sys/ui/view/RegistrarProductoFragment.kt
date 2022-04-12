@@ -17,10 +17,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practica.ventasmoviles.R
 import com.practica.ventasmoviles.data.entities.ProductosEntity
 import com.practica.ventasmoviles.databinding.FragmentRegistrarProductoBinding
@@ -50,10 +53,16 @@ class RegistrarProductoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.findViewById<CoordinatorLayout>(R.id.appbar)?.visibility = View.GONE
+        activity?.findViewById<FloatingActionButton>(R.id.register_button)?.visibility = View.GONE
         initOptionsRegisterField()
 
         registrarProductoViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer { errormessage->
             setErrorMessage(errormessage)
+        })
+
+        registrarProductoViewModel.fragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            changeFragment(it)
         })
 
         binding.saveBtn.setOnClickListener{
@@ -67,12 +76,12 @@ class RegistrarProductoFragment : Fragment() {
 
     }
 
-    val PICK_IMAGE = 2
-    fun selectPictureGalery(){
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+    private fun changeFragment(fragment:Fragment){
+        Toast.makeText(context,"producto agregado",Toast.LENGTH_LONG).show()
+        val transition = parentFragmentManager
+        val fragmentTransition =transition.beginTransaction()
+        fragmentTransition.replace(R.id.fragment_container,fragment)
+        fragmentTransition.commit()
     }
 
     private fun initOptionsRegisterField(){
@@ -102,10 +111,21 @@ class RegistrarProductoFragment : Fragment() {
     fun setErrorMessage(errorMessage: ErrorMessage){
         binding.nameField.error = errorMessage.name
         binding.costoField.error = errorMessage.costo
+        binding.categoriaField.error = errorMessage.categoria
         binding.precioMayoField.error = errorMessage.precioMayoreo
         binding.precioMenuField.error = errorMessage.precioMenudeo
         binding.marcaField.error = errorMessage.marca
         binding.colorField.error = errorMessage.color
+        binding.unidadMedidaField.error = errorMessage.unidadDeMedida
+        binding.cantidadMinField.error = errorMessage.cantidad
+    }
+
+    val PICK_IMAGE = 2
+    fun selectPictureGalery(){
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
     }
 
     //takepicture

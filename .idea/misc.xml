@@ -7,16 +7,18 @@
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.16" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.1" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
-        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/alert_dialog_photo.xml" value="0.13768115942028986" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/fragment_blank.xml" value="0.11875" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/fragment_categoria.xml" value="0.25" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/fragment_main_menu.xml" value="0.1" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/fragment_registrar_producto.xml" value="0.25" />
-        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/list_item_categoria.xml" value="0.13496376811594202" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/list_item_categoria.xml" value="0.25" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/list_item_options.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/layout/product_item.xml" value="0.25" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/menu/app_bar.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/menu/context_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/menu/main_menu.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/menu/top_app_bar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/VentasMoviles/app/src/main/res/xml/file_paths.xml" value="0.13134057971014493" />
       </map>

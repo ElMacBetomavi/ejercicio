@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/background_product_item"
+    android:layout_marginVertical="10sp"
+    android:layout_marginHorizontal="5sp">
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/categoria_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria_field_label"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/descripcion_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripcion"
+        android:textAlignment="center"/>
+    <ImageView
+        android:id="@+id/image_categoria_item"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_baseline_image_24"
+        android:text="@string/categoria_field_label"
+        android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <Button
+                android:id="@+id/editar_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Editar"
+                android:layout_marginRight="20sp"/>
+            <Button
+                android:id="@+id/eliminar_categoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eliminar"
+                android:layout_marginRight="20sp"/>
+            <Button
+                android:id="@+id/add_categoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agregar"/>
+        </LinearLayout>
+</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
