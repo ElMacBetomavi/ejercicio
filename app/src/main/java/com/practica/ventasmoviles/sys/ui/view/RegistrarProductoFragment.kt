@@ -44,6 +44,7 @@ class RegistrarProductoFragment : Fragment() {
     private val binding get() = _binding!!
     private val registrarProductoViewModel: RegistrarProductoViewModel by viewModels()
     val db = MainApplication.database.productoDao()
+    val dbCategoria = MainApplication.database.categoriaDao()
     private var id: Int? = 0
     var editFlag = false
     var initProduct = ProductosEntity(0,"","",0f,0f,0f,"", "","", "" ,0)
@@ -105,9 +106,13 @@ class RegistrarProductoFragment : Fragment() {
     }
 
     private fun initOptionsRegisterField(){
-        val itemsCategory = listOf("Material", "Design", "Components", "Android")
+        val categorias = dbCategoria.getAllCategoria()
+        val listCategorias = mutableListOf<String>()
+        categorias.map {
+            listCategorias.add(it.name!!)
+        }
         val itemsUnidades = listOf("Material", "Design", "Components", "Android")
-        val adapterCategory = ArrayAdapter(requireContext(), R.layout.list_item_options, itemsCategory)
+        val adapterCategory = ArrayAdapter(requireContext(), R.layout.list_item_options, listCategorias)
         (binding.categoriaField.editText as? AutoCompleteTextView)?.setAdapter(adapterCategory)
         val adapterUnidadMedida = ArrayAdapter(requireContext(), R.layout.list_item_options, itemsUnidades)
         (binding.unidadMedidaField.editText as? AutoCompleteTextView)?.setAdapter(adapterUnidadMedida)

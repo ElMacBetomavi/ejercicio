@@ -1,14 +1,11 @@
 package com.practica.ventasmoviles
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.PopupMenu
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.practica.ventasmoviles.databinding.ActivityMainBinding
@@ -23,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
     val transition = supportFragmentManager
+    val db = MainApplication.database.productoDao()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +44,6 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener {  menuItem -> setOnClickItems(menuItem) }
         /**atiende las opciones del menu principal en la appbar**/
         binding.topAppBar.setNavigationOnClickListener { setOnClickMenu() }
-
-        binding.topAppBar.setOnFocusChangeListener { view, b ->
-
-        }
 
     }
 
@@ -98,16 +92,7 @@ class MainActivity : AppCompatActivity() {
     private fun setOnClickItems(menuItem: MenuItem):Boolean{
         return when (menuItem.itemId) {
             R.id.filter -> {
-                mainViewModel.search()
                 println("filtrar ")
-                true
-            }
-            R.id.search -> {
-                println("buscar")
-                val mSearchView = MenuItemCompat.getActionView(menuItem) as SearchView
-                mSearchView.setOnSearchClickListener{
-                    println("funciona")
-                }
                 true
             }
             else -> false
@@ -115,20 +100,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        menuInflater.inflate(R.menu.top_app_bar, menu)
-//        val searchItem: MenuItem? = menu?.findItem(R.id.search)
-//        val mSearchView = MenuItemCompat.getActionView(searchItem) as SearchView
-//        mSearchView.setIconified(false);
-//        mSearchView.setIconifiedByDefault(false);
-//        mSearchView.onActionViewExpanded();
-//
-//        mSearchView.setOnSearchClickListener{
-//            println("funciona")
-//        }
-//
-//        return super.onCreateOptionsMenu(menu)
-//
-//    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 
 }

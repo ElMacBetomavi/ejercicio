@@ -17,6 +17,7 @@ import com.practica.ventasmoviles.data.entities.ProductosEntity
 import com.practica.ventasmoviles.databinding.FragmentMainMenuBinding
 import com.practica.ventasmoviles.sys.ui.view.adapter.ProductListAdapter
 import com.practica.ventasmoviles.sys.viewModel.productos.ProductViewModel
+import androidx.appcompat.widget.SearchView
 
 class ProductFragment : Fragment() {
 
@@ -45,10 +46,27 @@ class ProductFragment : Fragment() {
 
         mainMenuFragmentViewModel.products.observe(viewLifecycleOwner, Observer { currentProductList ->
             adapter.setListProducts(currentProductList)
+            productList = currentProductList
         })
 
         mainMenuFragmentViewModel.id.observe(viewLifecycleOwner, Observer {
             changeEditFragment(it)
+        })
+
+        activity?.findViewById<SearchView>(R.id.search)?.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query!=""){
+                    query?.let { mainMenuFragmentViewModel.search(it) }
+                }
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText==""){
+                    adapter.setListProducts(db.getAllProductos())
+                }
+                return true
+            }
         })
 
     }

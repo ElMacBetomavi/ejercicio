@@ -1,5 +1,6 @@
 package com.practica.ventasmoviles.data.datasource.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.practica.ventasmoviles.data.entities.CategoriaEntity
 import com.practica.ventasmoviles.data.entities.ProductosEntity
@@ -20,4 +21,8 @@ interface ProductoDao {
 
     @Update
     suspend fun updateCategoria(producto: ProductosEntity): Int
+
+    @Query("SELECT * FROM productos_entity WHERE categoria like :value")
+    suspend fun getProductByField(value: String?):  List<ProductosEntity>?
+
 }
