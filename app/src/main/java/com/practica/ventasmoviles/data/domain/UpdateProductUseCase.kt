@@ -5,12 +5,12 @@ import com.practica.ventasmoviles.data.entities.ProductosEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DeleteProductUseCase {
+class UpdateProductUseCase {
     val db = MainApplication.database.productoDao()
 
-    suspend fun deleteProduct(newProduct: ProductosEntity){
+    suspend fun updateCategoria(producto: ProductosEntity) {
         return withContext(Dispatchers.IO) {
-            db.deleteProducto(newProduct)
+            db.updateCategoria(producto)
         }
     }
 }

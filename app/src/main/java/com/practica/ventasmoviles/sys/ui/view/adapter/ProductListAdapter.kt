@@ -1,4 +1,5 @@
 package com.practica.ventasmoviles.sys.ui.view.adapter
+import android.annotation.SuppressLint
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.ventasmoviles.R
+import com.practica.ventasmoviles.data.entities.CategoriaEntity
 import com.practica.ventasmoviles.data.entities.ProductosEntity
 
 
-class ProductListAdapter(private val productsList: List<ProductosEntity>) :
+class ProductListAdapter() :
     RecyclerView.Adapter<ProductListAdapter.ViewHolder>(), View.OnCreateContextMenuListener {
+
+    private var productsList= emptyList<ProductosEntity>()
+    @SuppressLint("NotifyDataSetChanged")
+
+    fun setListProducts(products: List<ProductosEntity>){
+        this.productsList = products
+        notifyDataSetChanged()
+    }
 
     override fun onViewRecycled(holder: ViewHolder) {
         holder.itemView.setOnLongClickListener(null)
@@ -46,7 +56,7 @@ class ProductListAdapter(private val productsList: List<ProductosEntity>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.product_item, viewGroup, false)
+            .inflate(R.layout.list_item_producto, viewGroup, false)
 
         view.setOnCreateContextMenuListener(this)
         return ViewHolder(view)

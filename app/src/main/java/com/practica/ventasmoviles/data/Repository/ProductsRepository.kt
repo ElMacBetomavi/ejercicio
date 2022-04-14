@@ -7,7 +7,7 @@ import com.practica.ventasmoviles.data.entities.ProductosEntity
 
 class ProductsRepository(private val productoDao: ProductoDao) {
 
-    val allWords = productoDao.getAll()
+    val allWords = productoDao.getAllProductos()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

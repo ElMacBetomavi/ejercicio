@@ -17,4 +17,15 @@
     <string name="guardar_field_label">Guardar</string>
     <string name="cantidad_minima_field_label">Cantidad minima</string>
     <string name="todo">TODO</string>
+
+    //fragemnt label
+    <string name="categoria_label">categoria</string>
+    <string name="producto_label">producto</string>
+    <string name="compras_label">compras</string>
+    <string name="ventas_label">ventas</string>
+    <string name="mis_clientes_label">misClientes</string>
+    <string name="inventario_label">inventario</string>
+    <string name="descripcion_label">Descripción</string>
+
+
 </resources>

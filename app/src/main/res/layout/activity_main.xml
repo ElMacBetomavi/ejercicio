@@ -15,10 +15,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/appbar"
             tools:ignore="MissingConstraints">
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.google.android.material.appbar.AppBarLayout>
             <!-- Note: A RecyclerView can also be used -->
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
@@ -37,6 +33,7 @@
                 app:navigationIcon="@drawable/ic_baseline_menu_24"
                 app:title="Productos" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"

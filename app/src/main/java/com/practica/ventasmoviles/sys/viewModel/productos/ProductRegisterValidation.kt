@@ -1,10 +1,10 @@
-package com.practica.ventasmoviles.sys.viewModel
+package com.practica.ventasmoviles.sys.viewModel.productos
 
 import com.practica.ventasmoviles.data.entities.ProductosEntity
 
-class RegisterValidation {
+class ProductRegisterValidation {
 
-    fun validateProduct(producto: ProductosEntity): ErrorMessage{
+    fun validateProduct(producto: ProductosEntity): ErrorMessage {
         var currentErrorMessage = ErrorMessage()
 
         if(!validateName(producto.nombre!!)){

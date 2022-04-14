@@ -4,35 +4,30 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practica.ventasmoviles.sys.ui.view.CategoriaFragment
-import com.practica.ventasmoviles.data.datasource.repository.Repository
 import com.practica.ventasmoviles.data.domain.AddItemUseCase
 
-import com.practica.ventasmoviles.sys.ui.view.MainMenuFragment
+class MainViewModel :ViewModel() {
 
-class MainViewModel() :ViewModel() {
+    val addItemFragment = MutableLiveData<Fragment>()
+    var visibleFragment = MutableLiveData<VisibleFragment>()
 
-    val repository =  Repository()
-    val fragment = MutableLiveData<Fragment>()
-    private val mainFragment = MainMenuFragment()
-
-    fun onCreateInitFragment(){
-        fragment.postValue(mainFragment)
-    }
-
-    fun getFragment(supportFragmentManager: FragmentManager) {
+    fun changeAddItemFragment(supportFragmentManager: FragmentManager) {
         val addItem = AddItemUseCase()
         val item = addItem.selectObjetcToAdd(supportFragmentManager)
-        val curremtFragment:Fragment = addItem.addItem(item)
-        fragment.postValue(curremtFragment)
+        val curremtFragment:Fragment = addItem.getAddItemFragment(item)
+        addItemFragment.postValue(curremtFragment)
     }
 
-    fun openCategoriaView(){
-        fragment.postValue(CategoriaFragment())
+    fun changeCategoriaFragment(currentVisibleFragment: VisibleFragment){
+        visibleFragment.postValue(currentVisibleFragment)
     }
 
-    fun openProductView(){
-        fragment.postValue(MainMenuFragment())
+    fun changeProductFragment(currentVisibleFragment: VisibleFragment){
+        visibleFragment.postValue(currentVisibleFragment)
+    }
+
+    fun search(){
+
     }
 
 }

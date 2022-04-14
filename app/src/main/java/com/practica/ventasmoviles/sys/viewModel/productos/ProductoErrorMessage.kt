@@ -1,4 +1,4 @@
-package com.practica.ventasmoviles.sys.viewModel
+package com.practica.ventasmoviles.sys.viewModel.productos
 
 data class ErrorMessage(
     var name: String? =null,

@@ -1,15 +1,13 @@
 package com.practica.ventasmoviles.data.datasource.database.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import com.practica.ventasmoviles.data.entities.CategoriaEntity
 import com.practica.ventasmoviles.data.entities.ProductosEntity
 
 @Dao
 interface ProductoDao {
     @Query("SELECT * FROM productos_entity")
-    fun getAll(): List<ProductosEntity>
+    fun getAllProductos(): List<ProductosEntity>
 
     @Query("SELECT * FROM productos_entity WHERE id IN (:productsIds)")
     fun loadAllByIds(productsIds: IntArray): List<ProductosEntity>
@@ -18,5 +16,8 @@ interface ProductoDao {
     fun addProduct(product: ProductosEntity):Long
 
     @Delete
-    fun delete(product: ProductosEntity)
+    fun deleteProducto(product: ProductosEntity)
+
+    @Update
+    suspend fun updateCategoria(producto: ProductosEntity): Int
 }

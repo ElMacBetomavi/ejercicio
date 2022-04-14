@@ -1,5 +1,6 @@
 package com.practica.ventasmoviles.sys.ui.view
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -16,9 +17,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
@@ -28,25 +26,26 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practica.ventasmoviles.MainApplication
 import com.practica.ventasmoviles.R
 import com.practica.ventasmoviles.data.entities.CategoriaEntity
-import com.practica.ventasmoviles.data.entities.ProductosEntity
-import com.practica.ventasmoviles.databinding.FragmentRegistrarProductoBinding
-import com.practica.ventasmoviles.sys.viewModel.productos.ErrorMessage
-import com.practica.ventasmoviles.sys.viewModel.productos.RegistrarProductoViewModel
+import com.practica.ventasmoviles.databinding.FragmentRegistrarCategoriaBinding
+import com.practica.ventasmoviles.sys.viewModel.categorias.CategoriaErrorMessage
+import com.practica.ventasmoviles.sys.viewModel.categorias.RegisterCategoriaModelView
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.util.*
+
 
 private const val ARG_PARAM1 = "id"
 
-class RegistrarProductoFragment : Fragment() {
+class RegistrarCategoriaFragment : Fragment() {
 
-    private var _binding:FragmentRegistrarProductoBinding? = null
+    private var _binding: FragmentRegistrarCategoriaBinding? = null
     private val binding get() = _binding!!
-    private val registrarProductoViewModel: RegistrarProductoViewModel by viewModels()
-    val db = MainApplication.database.productoDao()
+    private val registrarCategoriaViewModel: RegisterCategoriaModelView by viewModels()
     private var id: Int? = 0
+    val db = MainApplication.database.categoriaDao()
     var editFlag = false
-    var initProduct = ProductosEntity(0,"","",0f,0f,0f,"", "","", "" ,0)
+    private lateinit var initcategoria:CategoriaEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +59,10 @@ class RegistrarProductoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentRegistrarProductoBinding.inflate(inflater, container, false)
+        _binding = FragmentRegistrarCategoriaBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,28 +73,40 @@ class RegistrarProductoFragment : Fragment() {
         if(id!=0) {
             editFlag = true
             setEditValue()
-        }
+        }else initcategoria = CategoriaEntity(0,"","")
 
-        initOptionsRegisterField()
-
-        registrarProductoViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer { errormessage->
+        registrarCategoriaViewModel.errorMessageCategoria.observe(viewLifecycleOwner, androidx.lifecycle.Observer { errormessage->
             setErrorMessage(errormessage)
         })
 
-        registrarProductoViewModel.fragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        registrarCategoriaViewModel.fragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             changeFragment(it)
         })
 
-        binding.saveBtn.setOnClickListener{
-            val producto = getDataProducto()
-            producto.id = initProduct.id
-            registrarProductoViewModel.validateProduct(producto,editFlag)
+        binding.saveCategoriaBtn.setOnClickListener{
+            val categoria:CategoriaEntity = getCategoria()
+
+            categoria.id = initcategoria.id
+            registrarCategoriaViewModel.validateCategoria(categoria, editFlag)
         }
 
         binding.imageField.setOnClickListener{
             showDialog()
         }
 
+    }
+
+    fun getCategoria():CategoriaEntity{
+        return CategoriaEntity(0,
+            binding.categoriaRegisterField.text.toString(),
+            binding.descripcionCategoriaField.text.toString(),
+            PhotoPath
+        )
+    }
+
+    fun setErrorMessage(errorMessage: CategoriaErrorMessage){
+        binding.categoriaRegisterField.error = errorMessage.name
+        binding.descripcionCategoriaField.error = errorMessage.description
     }
 
     private fun changeFragment(fragment:Fragment){
@@ -104,60 +116,20 @@ class RegistrarProductoFragment : Fragment() {
         fragmentTransition.commit()
     }
 
-    private fun initOptionsRegisterField(){
-        val itemsCategory = listOf("Material", "Design", "Components", "Android")
-        val itemsUnidades = listOf("Material", "Design", "Components", "Android")
-        val adapterCategory = ArrayAdapter(requireContext(), R.layout.list_item_options, itemsCategory)
-        (binding.categoriaField.editText as? AutoCompleteTextView)?.setAdapter(adapterCategory)
-        val adapterUnidadMedida = ArrayAdapter(requireContext(), R.layout.list_item_options, itemsUnidades)
-        (binding.unidadMedidaField.editText as? AutoCompleteTextView)?.setAdapter(adapterUnidadMedida)
-    }
-
-    fun getDataProducto():ProductosEntity{
-        return ProductosEntity(0,
-            PhotoPath,
-            binding.nameField.text.toString(),
-            binding.costoField.text.toString().toFloatOrNull(),
-            binding.precioMenuField.text.toString().toFloatOrNull(),
-            binding.precioMayoField.text.toString().toFloatOrNull(),
-            binding.categoriaValue.text.toString(),
-            binding.marcaField.text.toString(),
-            binding.colorField.text.toString(),
-            binding.unidadMedidaValue.text.toString(),
-            binding.cantidadMinField.text.toString().toIntOrNull(),
-        )
-    }
-
-    fun setErrorMessage(errorMessage: ErrorMessage){
-        binding.nameField.error = errorMessage.name
-        binding.costoField.error = errorMessage.costo
-        binding.categoriaField.error = errorMessage.categoria
-        binding.precioMayoField.error = errorMessage.precioMayoreo
-        binding.precioMenuField.error = errorMessage.precioMenudeo
-        binding.marcaField.error = errorMessage.marca
-        binding.colorField.error = errorMessage.color
-        binding.unidadMedidaField.error = errorMessage.unidadDeMedida
-        binding.cantidadMinField.error = errorMessage.cantidad
-    }
-
     @SuppressLint("SetTextI18n")
     fun setEditValue(){
-        val initProducto =  db.getAllProductos()
-        initProducto.map {
-            if (it.id==id) initProduct=it
+        val initCategoria =  db.getAllCategoria()
+        initcategoria = CategoriaEntity(0,"","")
+        initCategoria.map {
+            if (it.id==id) initcategoria=it
         }
-        binding.saveBtn.text = "editar"
-        binding.nameField.setText(initProduct.nombre)
-        binding.costoField.setText(initProduct.costo.toString())
-        binding.precioMenuField.setText(initProduct.precioMenudeo.toString())
-        binding.precioMayoField.setText(initProduct.precioMayoreo.toString())
-        binding.marcaField.setText(initProduct.marca)
-        binding.colorField.setText(initProduct.color)
-        binding.cantidadMinField.setText(initProduct.cantidadMin.toString())
-
-        val file = initProduct.imagen?.let { File(it) }
+        binding.title.setText("Editar Categoria")
+        binding.saveCategoriaBtn.text = "editar"
+        binding.categoriaRegisterField.setText(initcategoria.name)
+        binding.descripcionCategoriaField.setText(initcategoria.description)
+        val file = initcategoria.image?.let { File(it) }
         if (file?.exists()!!){
-            val bitmap: Bitmap = BitmapFactory.decodeFile(initProduct.imagen)
+            val bitmap: Bitmap = BitmapFactory.decodeFile(initcategoria.image)
             binding.imageField.setImageBitmap(bitmap)
         }
 
@@ -171,7 +143,7 @@ class RegistrarProductoFragment : Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
     }
 
-    //takepicture
+    //take picture
     val REQUEST_IMAGE_CAPTURE = 1
     var PhotoPath=""
     @RequiresApi(Build.VERSION_CODES.N)
@@ -217,7 +189,7 @@ class RegistrarProductoFragment : Fragment() {
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             if (absolutePath != null){
-                 PhotoPath = absolutePath
+                PhotoPath = absolutePath
             }
         }
         return picture
@@ -246,6 +218,17 @@ class RegistrarProductoFragment : Fragment() {
             //Toast.makeText(context, PhotoPath, Toast.LENGTH_SHORT).show()
             binding.imageField.setImageBitmap(imageScaled)
         }
+
+        if (requestCode == PICK_IMAGE&& resultCode == Activity.RESULT_OK){
+            val selectedImageUri: Uri? = data?.data
+
+            val path = selectedImageUri?.encodedPath
+
+            //binding.imageField.setImageBitmap(bitmap)
+            println("image"+ path!!)
+
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -265,5 +248,6 @@ class RegistrarProductoFragment : Fragment() {
         alert.show()
 
     }
+
 
 }

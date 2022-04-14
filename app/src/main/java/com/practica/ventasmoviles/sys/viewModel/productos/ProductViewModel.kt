@@ -1,9 +1,7 @@
-package com.practica.ventasmoviles.sys.viewModel
-import androidx.fragment.app.Fragment
+package com.practica.ventasmoviles.sys.viewModel.productos
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practica.ventasmoviles.sys.ui.view.CategoriaFragment
 import com.practica.ventasmoviles.MainApplication
 import com.practica.ventasmoviles.data.datasource.repository.Repository
 import com.practica.ventasmoviles.data.domain.DeleteProductUseCase
@@ -11,19 +9,17 @@ import com.practica.ventasmoviles.data.entities.ProductosEntity
 import com.practica.ventasmoviles.sys.ui.view.RegistrarProductoFragment
 import kotlinx.coroutines.launch
 
-class MainMenuFragmentViewModel:ViewModel() {
+class ProductViewModel:ViewModel() {
 
-    val repository =  Repository()
     var products = MutableLiveData<List<ProductosEntity>>()
-    var fragment = MutableLiveData<Fragment>()
     var registerProductFragment = RegistrarProductoFragment()
     var db = MainApplication.database.productoDao()
-
+    var id = MutableLiveData<Int>()
 
     fun onCreateListItems(){
         viewModelScope.launch {
             //val currentProducts = repository.getAllProducts()
-            val currentProducts = MainApplication.database.productoDao().getAll()
+            val currentProducts = MainApplication.database.productoDao().getAllProductos()
             products.postValue(currentProducts)
         }
     }
@@ -38,17 +34,19 @@ class MainMenuFragmentViewModel:ViewModel() {
         viewModelScope.launch {
             deleteProductUseCase.deleteProduct(producto)
             //val currentProducts = repository.getAllProducts()
-            val currentProducts = db.getAll()
+            val currentProducts = db.getAllProductos()
             products.postValue(currentProducts)
             println("eliminar editar " +producto.id)
         }
     }
 
     fun editarProducto(id:Int){
+        changeEditFragment(id)
         println("eliminar editar " +id)
     }
 
-    fun openCategoriaView(){
-        fragment.postValue(CategoriaFragment())
+    fun changeEditFragment(currentId:Int){
+        id.postValue(currentId)
     }
+
 }

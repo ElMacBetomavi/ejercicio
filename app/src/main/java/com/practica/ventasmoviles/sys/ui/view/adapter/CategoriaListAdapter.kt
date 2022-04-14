@@ -1,5 +1,7 @@
 package com.practica.ventasmoviles.sys.ui.view.adapter
 
+import android.annotation.SuppressLint
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +11,26 @@ import com.practica.ventasmoviles.R
 import com.practica.ventasmoviles.data.entities.CategoriaEntity
 
 
-class CategoriaListAdapter(private val productsList: List<CategoriaEntity>) :
-    RecyclerView.Adapter<CategoriaListAdapter.ViewHolder>() {
+class CategoriaListAdapter() :
+    RecyclerView.Adapter<CategoriaListAdapter.ViewHolder>(), View.OnCreateContextMenuListener {
+
+    private var productsList= emptyList<CategoriaEntity>()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setListProducts(products: List<CategoriaEntity>){
+        this.productsList = products
+        notifyDataSetChanged()
+    }
+
+    private var position:Int = 0
+
+    fun getPosition():Int{
+        return position
+    }
+
+    fun setPosition(position: Int){
+        this.position=position
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView
@@ -24,20 +44,36 @@ class CategoriaListAdapter(private val productsList: List<CategoriaEntity>) :
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CategoriaListAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_categoria, viewGroup, false)
-
-        return CategoriaListAdapter.ViewHolder(view)
+        view.setOnCreateContextMenuListener(this)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: CategoriaListAdapter.ViewHolder, position: Int) {
-        viewHolder.name.text = productsList[position].name
-        viewHolder.description.text = productsList[position].description
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        viewHolder.name.text = "Categoria: "+ productsList[position].name
+        viewHolder.description.text ="Descripcion: "+ productsList[position].description
 
+        viewHolder.itemView.setOnLongClickListener(View.OnLongClickListener {
+            setPosition(position)
+            false
+        })
     }
 
     override fun getItemCount() = productsList.size
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        view: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        menu!!.setHeaderTitle(null);
+        menu.add(0, view!!.getId(), 0, "Ver imagen");//groupId, itemId, order, title
+        menu.add(0, view.getId(), 0, "Eliminar")
+        menu.add(0, view.getId(), 0, "Editar");
+    }
 
 }
