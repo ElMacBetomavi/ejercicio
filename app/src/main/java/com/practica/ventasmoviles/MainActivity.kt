@@ -101,6 +101,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (supportFragmentManager.
+            findFragmentByTag("productos")?.isVisible == true){
+            transition.popBackStack()
+            transition.popBackStack()
+        }
         super.onBackPressed()
     }
 
